@@ -30,3 +30,11 @@ jobs:
       run: |
         docker tag project1:${{ github.sha }} 692859926752.dkr.ecr.us-east-1.amazonaws.com/project1:${{ github.sha }}
         docker push 692859926752.dkr.ecr.us-east-1.amazonaws.com/project1:${{ github.sha }}
+
+    - name: Update kubeconfig
+      run: aws eks update-kubeconfig --name devops-eks --region us-east-1
+
+    - name: Deploy to EKS
+      run: |
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
